@@ -1,13 +1,13 @@
 {
   "name": "ts-imm",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "case classes for TypeScript",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "test": "jest",
-    "prepare": "build",
-    "build": "tsc"
+    "test": "yarn jest",
+    "prepare": "yarn build",
+    "build": "yarn tsc"
   },
   "keywords": [
     "typescript",
