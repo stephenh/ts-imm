@@ -1,6 +1,6 @@
 {
   "name": "ts-imm",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "case classes for TypeScript",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -8,7 +8,10 @@
     "test": "jest",
     "build": "tsc"
   },
-  "keywords": ["typescript", "immutable.js"],
+  "keywords": [
+    "typescript",
+    "immutable.js"
+  ],
   "author": "Stephen Haberman",
   "license": "Apache-2.0",
   "devDependencies": {
