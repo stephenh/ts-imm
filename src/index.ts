@@ -11,20 +11,6 @@ type PropertyKeys<T> = NotSubTypeKeys<T, AnyFunction>;
 /** The non-method properties of T. */
 export type Properties<T> = Pick<T, PropertyKeys<T>>;
 
-/** Data we collect as the decorators run. */
-class ImmClassData {
-  /** @return the `ImmData` for `target`, which should be the prototype. */
-  public static of(proto: any): ImmClassData {
-    if (proto.__imm === undefined) {
-      proto.__imm = new ImmClassData();
-    }
-    return proto.__imm as ImmClassData;
-  }
-
-  /** A list to track properties as @imm sees them. */
-  public properties: string[] = [];
-}
-
 interface Constructor {
   new(...args: any[]): any;
 }
@@ -45,7 +31,7 @@ export class Imm<T> {
   }
 
   private newMap(map: Map<any, any>, data: any): Map<any, any> {
-    ((this as any).__imm as ImmClassData).properties.forEach(p => {
+    Object.getOwnPropertyNames(Object.getPrototypeOf(this)).forEach(p => {
       if (data.hasOwnProperty(p)) {
         map = map.set(p, data[p]);
       }
@@ -56,7 +42,6 @@ export class Imm<T> {
 
 /** Annotates a property as immutable/for inclusion in the copy constructor. */
 export function imm(target: any, propertyKey: string): any {
-  ImmClassData.of(target).properties.push(propertyKey);
   Object.defineProperty(target, propertyKey, {
     configurable: false,
     enumerable: true,
