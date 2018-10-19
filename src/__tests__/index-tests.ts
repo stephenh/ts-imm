@@ -4,7 +4,7 @@ class SimpleData extends Imm<SimpleData> {
   @imm public name!: string;
   @imm public address?: string;
 
-  public mutate(): this {
+  public someBusinessLogic(): this {
     return this.copy({name: "new name"});
   }
 }
@@ -16,15 +16,15 @@ describe("imm", () => {
     expect(d.address).toBeUndefined();
   });
 
-  it("can mutate a property with a method", () => {
+  it("can someBusinessLogic a property with a method", () => {
     const a = new SimpleData({name: "a"});
     expect(a.name).toEqual("a");
-    const b = a.mutate();
+    const b = a.someBusinessLogic();
     expect(a.name).toEqual("a");
     expect(b.name).toEqual("new name");
   });
 
-  it("can mutate a property with the generic copy constructor", () => {
+  it("can someBusinessLogic a property with the generic copy constructor", () => {
     const a = new SimpleData({name: "a"});
     expect(a.address).toBeUndefined();
     const b = a.copy({address: "b"});

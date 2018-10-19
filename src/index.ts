@@ -4,7 +4,6 @@ import {Map} from "immutable";
 type NotSubTypeKeys<T, Condition> = {
   [K in keyof T]: T[K] extends Condition ? never : K
 }[keyof T];
-
 type AnyFunction = (_: any) => any;
 type PropertyKeys<T> = NotSubTypeKeys<T, AnyFunction>;
 
@@ -18,16 +17,18 @@ interface Constructor {
 /** A base class for data classes so they get the constructor and copy method for free. */
 export class Imm<T> {
 
-  private readonly map: Map<any, any>;
+  // An odd name to avoid collisions in subclasses
+  private readonly _imm_map: Map<any, any>;
 
   constructor(data: Properties<T>) {
     // Even though our professed parameter is is Properties<T>, the copy constructor
     // lies and passes in a map so that we can use it directly.
-    this.map = data instanceof Map ? data as any as Map<any, any> : this.newMap(Map(), data);
+    this._imm_map = data instanceof Map ? data as any as Map<any, any> : this.newMap(Map(), data);
   }
 
+  /** @return a new instance of this class but with the changes in `data` applied. */
   public copy(data: Partial<T>): this {
-    return new (this.constructor as Constructor)(this.newMap(this.map, data));
+    return new (this.constructor as Constructor)(this.newMap(this._imm_map, data));
   }
 
   private newMap(map: Map<any, any>, data: any): Map<any, any> {
@@ -46,7 +47,7 @@ export function imm(target: any, propertyKey: string): any {
     configurable: false,
     enumerable: true,
     get(): any {
-      return this.map.get(propertyKey);
+      return this._imm_map.get(propertyKey);
     },
   });
 }
