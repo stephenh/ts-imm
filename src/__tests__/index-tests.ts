@@ -1,8 +1,8 @@
 import {Imm, imm} from "../index";
 
 class SimpleData extends Imm<SimpleData> {
-  @imm public name!: string;
-  @imm public address?: string;
+  @imm public readonly name!: string;
+  @imm public readonly address?: string;
 
   public someBusinessLogic(): this {
     return this.copy({name: "new name"});
