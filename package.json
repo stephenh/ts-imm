@@ -1,6 +1,6 @@
 {
   "name": "ts-imm",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "case classes for TypeScript",
   "main": "build/index.js",
   "types": "build/index.d.ts",
