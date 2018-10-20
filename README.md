@@ -43,6 +43,12 @@ describe("imm", () => {
 });
 ```
 
+Known Limitations
+=================
+
+* The `Properties<T>` type (which is used for the constructor) only works for public properties
+* Public getters, e.g. `public get foo()`, are not supported, for now just use methods `public foo() { ... }`.
+
 Disclaimers
 ===========
 
