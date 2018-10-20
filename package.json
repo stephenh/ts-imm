@@ -10,8 +10,7 @@
     "build": "yarn tsc"
   },
   "keywords": [
-    "typescript",
-    "immutable.js"
+    "typescript"
   ],
   "author": "Stephen Haberman",
   "license": "Apache-2.0",
@@ -27,7 +26,5 @@
     "tslint-immutable": "^4.7.0",
     "typescript": "^3.0.1"
   },
-  "dependencies": {
-    "immutable": "4.0.0-rc.10"
-  }
+  "dependencies": {}
 }
