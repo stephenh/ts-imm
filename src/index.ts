@@ -21,19 +21,28 @@ export class Imm<T> {
   private readonly _imm_map: Map<any, any>;
 
   constructor(data: Properties<T>) {
-    // Even though our professed parameter is is Properties<T>, the copy constructor
-    // lies and passes in a map so that we can use it directly.
-    this._imm_map = data instanceof Map ? data as any as Map<any, any> : this.newMap(Map(), data);
+    // We bypass the subclass's constructor (if the user provided one) passing in a
+    // default value by checking if the copy method passed us the map out-of-band.
+    //
+    // Stepping out of the stack like this is not super-kosher, but it is at least on
+    // our protype so should only break if the constructor is making other instances of
+    // the same class.
+    this._imm_map = Object.getPrototypeOf(this).copyConstructorData || this.newMap(Map(), data);
   }
 
   /** @return a new instance of this class but with the changes in `data` applied. */
   public copy(data: Partial<T>): this {
-    return new (this.constructor as Constructor)(this.newMap(this._imm_map, data));
+    try {
+      Object.getPrototypeOf(this).copyConstructorData = this.newMap(this._imm_map, data);
+      return new (this.constructor as Constructor)();
+    } finally {
+      Object.getPrototypeOf(this).copyConstructorData = undefined;
+    }
   }
 
   private newMap(map: Map<any, any>, data: any): Map<any, any> {
     Object.getOwnPropertyNames(Object.getPrototypeOf(this)).forEach(p => {
-      if (data.hasOwnProperty(p)) {
+      if (data.hasOwnProperty(p) && p !== "copyConstructorData") {
         map = map.set(p, data[p]);
       }
     })

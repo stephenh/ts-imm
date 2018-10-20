@@ -13,6 +13,22 @@ class SimpleData extends Imm<SimpleData> {
   }
 }
 
+class DataWithConstructor extends Imm<DataWithConstructor> {
+  @imm public readonly name!: string;
+
+  constructor() {
+    super({name: "from constructor"});
+  }
+}
+
+class NestedDataWithConstructor extends Imm<NestedDataWithConstructor> {
+  @imm public readonly inner!: SimpleData;
+
+  constructor() {
+    super({inner: new SimpleData({name: "simple" })});
+  }
+}
+
 describe("imm", () => {
   it("can create a new instance", () => {
     const d = new SimpleData({name: "a"});
@@ -36,4 +52,17 @@ describe("imm", () => {
     expect(b.address).toEqual("b");
   });
 
+  it("can support classes with constructors", () => {
+    const a = new DataWithConstructor();
+    expect(a.name).toEqual("from constructor");
+    const b = a.copy({name: "new value"});
+    expect(b.name).toEqual("new value");
+  });
+
+  it("can support nested data classes", () => {
+    const a = new NestedDataWithConstructor();
+    expect(a.inner.name).toEqual("simple");
+    const b = a.copy({inner: new SimpleData({name: "updated"})});
+    expect(b.inner.name).toEqual("updated");
+  });
 });
