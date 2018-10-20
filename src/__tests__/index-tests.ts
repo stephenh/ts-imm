@@ -7,6 +7,10 @@ class SimpleData extends Imm<SimpleData> {
   public someBusinessLogic(): this {
     return this.copy({name: "new name"});
   }
+
+  public logicWithTwoParams(a: number, b: number): this {
+    return this.copy({name: `name ${a} ${b}`});
+  }
 }
 
 describe("imm", () => {

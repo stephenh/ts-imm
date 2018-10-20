@@ -4,7 +4,7 @@ import {Map} from "immutable";
 type NotSubTypeKeys<T, Condition> = {
   [K in keyof T]: T[K] extends Condition ? never : K
 }[keyof T];
-type AnyFunction = (_: any) => any;
+type AnyFunction = (...args: any[]) => any;
 type PropertyKeys<T> = NotSubTypeKeys<T, AnyFunction>;
 
 /** The non-method properties of T. */
